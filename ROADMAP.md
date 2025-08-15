@@ -12,6 +12,10 @@ Ten dokument śledzi postęp prac nad aplikacją oraz definiuje przyszłe zadani
 - [x] Ustalenie workflow (feature branching + Pull Request).
 - [x] Ustalenie zasady: push brancha tylko po lokalnym przetestowaniu działania aplikacji.
 - [x] Stworzenie mapy drogowej projektu (`ROADMAP.md`).
+- [x] Naprawa błędów HTTP 500 w backendzie (usunięcie nieistniejącej metody setDefaultLogger).
+- [x] Implementacja brakujących klas domeny (Project, ProjectRepositoryInterface).
+- [x] Naprawa wyświetlania projektów w frontend (dopasowanie nazw właściwości API).
+- [x] Konfiguracja podstawowego działania aplikacji (backend PHP + frontend Vue.js).
 
 ---
 
@@ -33,6 +37,7 @@ Ten dokument śledzi postęp prac nad aplikacją oraz definiuje przyszłe zadani
 
 ### Faza 3: Testy i Wdrożenie
 
-- [ ] **Testy jednostkowe**: Dodanie podstawowych testów jednostkowych dla logiki biznesowej w backendzie (PHPUnit).
+- [x] **Testy jednostkowe**: Dodanie podstawowych testów jednostkowych dla logiki biznesowej w backendzie (PHP - testowanie klasy Project).
+- [x] **Testy komponentów**: Stworzenie podstawowych testów dla komponentów frontendowych (Vue.js - weryfikacja struktury i składni).
 - [ ] **Testy E2E**: Skonfigurowanie prostych testów End-to-End dla frontendu, które sprawdzą kluczowe ścieżki użytkownika (np. przy użyciu Cypress lub Playwright).
 - [ ] **Konfiguracja CI/CD**: Ustawienie GitHub Actions do automatycznego budowania, testowania i wdrażania aplikacji na Azure Static Web Apps po każdym Pull Requescie do `main`.
