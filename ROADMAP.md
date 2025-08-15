@@ -10,6 +10,7 @@ Ten dokument śledzi postęp prac nad aplikacją oraz definiuje przyszłe zadani
 - [x] Stworzenie podstawowej dokumentacji (`README.md`).
 - [x] Inicjalizacja repozytorium Git i połączenie z GitHub.
 - [x] Ustalenie workflow (feature branching + Pull Request).
+- [x] Ustalenie zasady: push brancha tylko po lokalnym przetestowaniu działania aplikacji.
 - [x] Stworzenie mapy drogowej projektu (`ROADMAP.md`).
 
 ---
