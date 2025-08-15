@@ -27,6 +27,10 @@ class ComposerStaticInit73c09238a752186ab4712c5c997b757a
             'Psr\\Http\\Message\\' => 17,
             'Psr\\Container\\' => 14,
         ),
+        'M' => 
+        array (
+            'Monolog\\' => 8,
+        ),
         'L' => 
         array (
             'Laravel\\SerializableClosure\\' => 28,
@@ -80,6 +84,10 @@ class ComposerStaticInit73c09238a752186ab4712c5c997b757a
         'Psr\\Container\\' => 
         array (
             0 => __DIR__ . '/..' . '/psr/container/src',
+        ),
+        'Monolog\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/monolog/monolog/src/Monolog',
         ),
         'Laravel\\SerializableClosure\\' => 
         array (
