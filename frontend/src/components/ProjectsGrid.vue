@@ -2,10 +2,10 @@
   <v-container>
     <h2 class="my-4">Projekty</h2>
     <v-row>
-      <v-col v-for="p in projects" :key="p.title" cols="12" md="6" lg="4">
+      <v-col v-for="p in projects" :key="p.id" cols="12" md="6" lg="4">
         <v-card>
-          <v-card-title>{{ p.title }}</v-card-title>
-          <v-card-text>{{ p.desc }}</v-card-text>
+          <v-card-title>{{ p.name }}</v-card-title>
+          <v-card-text>{{ p.description }}</v-card-text>
         </v-card>
       </v-col>
     </v-row>

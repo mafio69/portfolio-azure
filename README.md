@@ -108,3 +108,25 @@ Aplikacja jest przystosowana do wdrożenia jako **Azure Static Web App**. Proces
     -   **Output location**: `dist` (wewnątrz katalogu frontendu)
 
 Po skonfigurowaniu, Azure automatycznie zbuduje i wdroży aplikację po każdym `push` do głównego brancha repozytorium. Plik `staticwebapp.config.json` może być użyty do dalszej konfiguracji routingu i zabezpieczeń.
+
+---
+
+## Rozwiązywanie problemów
+
+### Błąd "500 Internal Server Error" - brak połączenia z backendem
+
+Jeśli widzisz błąd 500 lub brak połączenia z API, prawdopodobnie backend nie jest uruchomiony. Frontend próbuje łączyć się z API pod adresem `localhost:8000`, ale serwer PHP nie działa.
+
+**Rozwiązanie:**
+
+1. **Windows**: Uruchom `start-backend.bat` z głównego katalogu projektu
+2. **Linux/WSL**: Uruchom `./start-backend.sh` z głównego katalogu projektu
+
+Alternatywnie, możesz ręcznie uruchomić backend:
+```bash
+cd backend
+composer install  # tylko przy pierwszym uruchomieniu
+php -S localhost:8000 -t public
+```
+
+Po uruchomieniu backendu, frontend powinien poprawnie łączyć się z API i wyświetlać listę projektów.

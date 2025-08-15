@@ -30,8 +30,6 @@ $routes($app);
 // Get error middleware
 $errorMiddleware = $app->addErrorMiddleware(true, true, true);
 
-// Get the default error handler and attach the logger
-$errorHandler = $errorMiddleware->getDefaultErrorHandler();
-$errorHandler->setDefaultLogger($container->get(LoggerInterface::class));
+// Error handler is already configured with logger in ErrorMiddleware
 
 $app->run();

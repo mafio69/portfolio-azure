@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use DI\ContainerBuilder;
 use Psr\Container\ContainerInterface;
 use App\Domain\Project\ProjectRepositoryInterface;
 use App\Infrastructure\Persistence\Project\InMemoryProjectRepository;
