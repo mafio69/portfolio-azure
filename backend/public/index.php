@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 use DI\ContainerBuilder;
 use Slim\Factory\AppFactory;
+use Slim\Middleware\ErrorMiddleware;
+use Psr\Log\LoggerInterface;
 
 require __DIR__ . '/../vendor/autoload.php';
 
@@ -24,5 +26,12 @@ $app = AppFactory::create();
 // Register routes
 $routes = require __DIR__ . '/../app/routes.php';
 $routes($app);
+
+// Get error middleware
+$errorMiddleware = $app->addErrorMiddleware(true, true, true);
+
+// Get the default error handler and attach the logger
+$errorHandler = $errorMiddleware->getDefaultErrorHandler();
+$errorHandler->setDefaultLogger($container->get(LoggerInterface::class));
 
 $app->run();
