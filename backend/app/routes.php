@@ -14,4 +14,13 @@ return function (App $app) {
     
     $app->get('/api/projects', ListProjectsAction::class);
     $app->post('/api/contact', ContactAction::class);
+    $app->post('/api/debug', function ($request, $response) {
+        $data = [
+            'method' => $request->getMethod(),
+            'raw_body' => $request->getBody()->getContents()
+        ];
+
+        $response->getBody()->write(json_encode($data));
+        return $response->withHeader('Content-Type', 'application/json');
+    });
 };

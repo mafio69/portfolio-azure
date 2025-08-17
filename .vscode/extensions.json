@@ -1,0 +1,14 @@
+{
+"recommendations": [
+"ms-vscode-remote.remote-wsl",
+"dbaeumer.vscode-eslint",
+"esbenp.prettier-vscode",
+"Vue.volar",
+"ms-azuretools.vscode-azurestaticwebapps",
+"bmewburn.vscode-intelephense-client",
+"editorconfig.editorconfig",
+"rangav.vscode-thunder-client",
+"humao.rest-client",
+"eamodio.gitlens"
+]
+}
