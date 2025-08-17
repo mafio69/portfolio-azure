@@ -41,3 +41,9 @@ Ten dokument śledzi postęp prac nad aplikacją oraz definiuje przyszłe zadani
 - [x] **Testy komponentów**: Stworzenie podstawowych testów dla komponentów frontendowych (Vue.js - weryfikacja struktury i składni).
 - [ ] **Testy E2E**: Skonfigurowanie prostych testów End-to-End dla frontendu, które sprawdzą kluczowe ścieżki użytkownika (np. przy użyciu Cypress lub Playwright).
 - [ ] **Konfiguracja CI/CD**: Ustawienie GitHub Actions do automatycznego budowania, testowania i wdrażania aplikacji na Azure Static Web Apps po każdym Pull Requescie do `main`.
+
+### Faza 4: Infrastruktura i Dokumentacja
+
+- [ ] **Automatyzacja konfiguracji Nginx**: Stworzenie skryptu do automatycznej konfiguracji środowiska Nginx na podstawie dokumentacji z `nginx-setup.md`, który będzie instalował i konfigurował wszystkie niezbędne komponenty jednym poleceniem.
+- [ ] **Aktualizacja dokumentacji deployment**: Rozszerzenie dokumentacji w `README.md` o sekcję opisującą różne opcje wdrożenia (lokalnie z Nginx, Azure Static Web Apps, Docker) z odniesieniami do odpowiednich przewodników.
+- [ ] **Monitoring i logi**: Implementacja systemu monitorowania aplikacji z konfiguracją logów Nginx i PHP zgodnie z najlepszymi praktykami opisanymi w dokumentacji.

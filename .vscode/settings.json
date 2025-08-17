@@ -1,0 +1,21 @@
+{
+"files.eol": "\n",
+"files.insertFinalNewline": true,
+"files.trimTrailingWhitespace": true,
+
+"editor.formatOnSave": true,
+"editor.defaultFormatter": "esbenp.prettier-vscode",
+
+"[vue]": { "editor.defaultFormatter": "esbenp.prettier-vscode" },
+"[typescript]": { "editor.defaultFormatter": "esbenp.prettier-vscode" },
+"[javascript]": { "editor.defaultFormatter": "esbenp.prettier-vscode" },
+"[json]": { "editor.defaultFormatter": "esbenp.prettier-vscode" },
+"[css]": { "editor.defaultFormatter": "esbenp.prettier-vscode" },
+"[php]": { "editor.defaultFormatter": "esbenp.prettier-vscode" },
+
+"eslint.validate": ["javascript", "javascriptreact", "typescript", "typescriptreact", "vue"],
+"prettier.requireConfig": true,
+
+"php.validate.executablePath": "/usr/bin/php",
+"intelephense.files.maxSize": 5000000
+}

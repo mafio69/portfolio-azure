@@ -7,6 +7,7 @@ use Slim\Factory\AppFactory;
 use Slim\Middleware\ErrorMiddleware;
 use Psr\Log\LoggerInterface;
 
+
 require __DIR__ . '/../vendor/autoload.php';
 
 // Create DI container builder
