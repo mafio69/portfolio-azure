@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use App\Action\ListProjectsAction;
+use App\Action\ContactAction;
 use Slim\App;
 
 return function (App $app) {
@@ -12,4 +13,5 @@ return function (App $app) {
     });
     
     $app->get('/api/projects', ListProjectsAction::class);
+    $app->post('/api/contact', ContactAction::class);
 };

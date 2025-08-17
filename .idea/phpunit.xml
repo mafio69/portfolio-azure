@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="PHPUnit">
+    <option name="directories">
+      <list>
+        <option value="\\wsl.localhost\Ubuntu-24.04\home\mariusz\projects\portfolio_azure\tests" />
+      </list>
+    </option>
+  </component>
+</project>

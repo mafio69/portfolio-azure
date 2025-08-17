@@ -10,6 +10,20 @@
     <option name="highlightLevel" value="WARNING" />
     <option name="transferred" value="true" />
   </component>
+  <component name="PhpCodeSniffer">
+    <phpcs_settings>
+      <phpcs_by_interpreter asDefaultInterpreter="true" interpreter_id="016382b0-794b-4591-a00c-ff6627ee2fd9" timeout="30000" />
+      <PhpCSConfiguration beautifier_path="$PROJECT_DIR$/backend/vendor/bin/phpcbf" tool_path="$PROJECT_DIR$/backend/vendor/bin/phpcs" />
+    </phpcs_settings>
+  </component>
+  <component name="PhpDebugIgnoredPathsSettings">
+    <skipped_paths>
+      <skipped_path path="$PROJECT_DIR$/backend/vendor" />
+    </skipped_paths>
+  </component>
+  <component name="PhpExternalFormatter">
+    <option name="externalFormatter" value="PHP_CS_FIXER" />
+  </component>
   <component name="PhpIncludePathManager">
     <include_path>
       <path value="$PROJECT_DIR$/backend/vendor/composer" />
@@ -28,6 +42,9 @@
       <path value="$PROJECT_DIR$/backend/vendor/php-di/invoker" />
       <path value="$PROJECT_DIR$/backend/vendor/php-di/php-di" />
       <path value="$PROJECT_DIR$/backend/vendor/laravel/serializable-closure" />
+      <path value="$PROJECT_DIR$/backend/vendor/monolog/monolog" />
+      <path value="$PROJECT_DIR$/backend/vendor/squizlabs/php_codesniffer" />
+      <path value="$PROJECT_DIR$/backend/vendor/phpstan/phpstan" />
     </include_path>
   </component>
   <component name="PhpInterpreters">
@@ -98,13 +115,24 @@
     </phpInfoCache>
   </component>
   <component name="PhpProjectSharedConfiguration" php_language_level="8.3" />
+  <component name="PhpStan">
+    <PhpStan_settings>
+      <phpstan_by_interpreter asDefaultInterpreter="true" interpreter_id="016382b0-794b-4591-a00c-ff6627ee2fd9" timeout="60000" />
+      <PhpStanConfiguration tool_path="$PROJECT_DIR$/backend/vendor/bin/phpstan" />
+    </PhpStan_settings>
+  </component>
   <component name="PhpStanOptionsConfiguration">
     <option name="transferred" value="true" />
   </component>
   <component name="PhpUnit">
     <phpunit_settings>
-      <PhpUnitSettings custom_loader_path="$PROJECT_DIR$/backend/vendor/autoload.php" />
+      <PhpUnitSettings custom_loader_path="$PROJECT_DIR$/backend/vendor/autoload.php" phpunit_phar_path="" />
     </phpunit_settings>
+  </component>
+  <component name="Psalm">
+    <Psalm_settings>
+      <psalm_fixer_by_interpreter asDefaultInterpreter="true" interpreter_id="016382b0-794b-4591-a00c-ff6627ee2fd9" timeout="60000" />
+    </Psalm_settings>
   </component>
   <component name="PsalmOptionsConfiguration">
     <option name="transferred" value="true" />
