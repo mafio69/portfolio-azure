@@ -1,0 +1,134 @@
+### Variables
+@host = localhost:8080
+@api_base = http://{{host}}
+
+### Test GET /api/projects - podstawowy
+GET {{api_base}}/api/projects
+Accept: application/json
+
+### Test GET /api/projects - z headerami debug
+GET {{api_base}}/api/projects
+Accept: application/json
+X-Debug: true
+User-Agent: PHPStorm-HTTP-Client/Portfolio-Tests
+
+### Test POST /api/contact - sukces
+POST {{api_base}}/api/contact
+Content-Type: application/json
+Accept: application/json
+
+{
+  "name": "{{$randomFirstName}} {{$randomLastName}}",
+  "email": "{{$randomEmail}}",
+  "message": "Test message from PHPStorm at {{$timestamp}}"
+}
+
+### Test POST /api/contact - z polskimi znakami
+POST {{api_base}}/api/contact
+Content-Type: application/json
+Accept: application/json
+
+{
+  "name": "Mariusz Testowy",
+  "email": "mariusz@portfolio.pl",
+  "message": "Wiadomość testowa z polskimi znakami: ąćęłńóśźż"
+}
+
+### Test POST /api/debug - sprawdź parsing body
+POST {{api_base}}/api/debug
+Content-Type: application/json
+
+{
+  "test_data": "debugging request",
+  "uuid": "{{$random.uuid}}",
+  "timestamp": "{{$timestamp}}"
+}
+
+### Test błędnego endpointu - 404
+GET {{api_base}}/api/nonexistent
+Accept: application/json
+
+### Test POST bez Content-Type - error handling
+POST {{api_base}}/api/contact
+
+{
+  "name": "No Content Type Test"
+}
+
+### Test z zapisem response do pliku
+GET {{api_base}}/api/projects
+Accept: application/json
+
+>> {{$historyFolder}}/projects-response.json
+
+### Test z weryfikacją response
+POST {{api_base}}/api/contact
+Content-Type: application/json
+
+{
+  "name": "Response Validation Test",
+  "email": "validation@test.pl",
+  "message": "Testing response validation"
+}
+
+> {%
+    client.test("Status is 200", function() {
+        client.assert(response.status === 200, "Expected 200 but got " + response.status);
+    });
+
+    client.test("Response is JSON", function() {
+        client.assert(response.contentType.mimeType === "application/json", "Not JSON response");
+    });
+
+    client.test("Success field is true", function() {
+        var json = response.body;
+        client.assert(json.success === true, "Success should be true");
+    });
+
+    client.test("Has timestamp", function() {
+        var json = response.body;
+        client.assert(json.timestamp !== undefined, "Timestamp missing");
+    });
+
+    client.test("Message in Polish", function() {
+        var json = response.body;
+        client.assert(json.message.includes("Dziękujemy"), "Polish message missing");
+    });
+%}
+
+### Test performance - measure response time (FIXED)
+GET {{api_base}}/api/projects
+Accept: application/json
+
+> {%
+    client.test("Response time check", function() {
+        if (typeof response.responseTime !== 'undefined') {
+            client.assert(response.responseTime < 500, "Response too slow: " + response.responseTime + "ms");
+        } else {
+            console.log("responseTime not available, checking status instead");
+            client.assert(response.status === 200, "Response should be 200");
+        }
+    });
+%}
+
+
+### Test z różnymi metodami HTTP
+# @no-redirect
+OPTIONS {{api_base}}/api/contact
+
+### Test CORS headers
+GET {{api_base}}/api/projects
+Origin: http://localhost:3000
+Access-Control-Request-Method: GET
+
+### Test z custom headers dla debugging
+POST {{api_base}}/api/contact
+Content-Type: application/json
+X-Request-ID: {{$random.uuid}}
+X-Test-Environment: development
+
+{
+  "name": "Debug Test User",
+  "email": "debug@test.pl",
+  "message": "Request with custom debug headers"
+}

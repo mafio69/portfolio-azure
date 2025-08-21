@@ -1,11 +1,18 @@
+// src/router/index.js
 import { createRouter, createWebHistory } from 'vue-router'
-import ProjectsGrid from '../components/ProjectsGrid.vue'
-import Contact from '../components/Contact.vue'
+import Projects from '@/views/Projects.vue'
+import About from '@/views/About.vue'
+import Contact from '@/views/Contact.vue'
 
+const routes = [
+    { path: '/', name: 'Projects', component: Projects },
+    { path: '/about', name: 'About', component: About },
+    { path: '/contact', name: 'Contact', component: Contact }
+]
+
+// WAŻNE: Musi być export default
 export default createRouter({
     history: createWebHistory(),
-    routes: [
-        { path: '/', component: ProjectsGrid },
-        { path: '/contact', component: Contact }
-    ]
+    routes
 })
+

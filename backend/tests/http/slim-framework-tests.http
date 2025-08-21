@@ -1,0 +1,37 @@
+### Test Slim routing - trailing slash
+GET http://localhost:8080/api/projects/
+Accept: application/json
+
+### Test Slim middleware - body parsing
+POST http://localhost:8080/api/contact
+Content-Type: application/json
+
+{
+  "nested": {
+    "data": "test",
+    "array": [1, 2, 3]
+  }
+}
+
+### Test PHP-FPM integration
+GET http://localhost:8080/index.php/api/projects
+Accept: application/json
+
+### Test error handling - malformed JSON
+POST http://localhost:8080/api/contact
+Content-Type: application/json
+
+{
+  "name": "Malformed test"
+  "email": "missing comma above"
+}
+
+### Test large payload
+POST http://localhost:8080/api/contact
+Content-Type: application/json
+
+{
+  "name": "Large Payload Test",
+  "email": "large@test.pl",
+  "message": "{{$randomLoremText}}"
+}

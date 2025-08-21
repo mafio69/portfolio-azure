@@ -19,12 +19,12 @@
         Projekty
       </v-btn>
       
-      <v-btn text class="mx-2">
+      <v-btn text to="/about"  class="mx-2">
         <v-icon left>mdi-account</v-icon>
         O Mnie
       </v-btn>
       
-      <v-btn text class="mx-2">
+      <v-btn text to="/contact" class="mx-2">
         <v-icon left>mdi-email</v-icon>
         Kontakt
       </v-btn>
