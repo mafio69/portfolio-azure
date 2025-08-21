@@ -6,6 +6,7 @@ use DI\ContainerBuilder;
 use Slim\Factory\AppFactory;
 use Slim\Middleware\ErrorMiddleware;
 use Psr\Log\LoggerInterface;
+use App\Infrastructure\Middleware\CorsMiddleware;
 
 
 require __DIR__ . '/../vendor/autoload.php';
@@ -30,7 +31,8 @@ $routes($app);
 
 // Get error middleware
 $errorMiddleware = $app->addErrorMiddleware(true, true, true);
-
+// DODAJ middleware - po utworzeniu app, przed routes
+$app->add(new CorsMiddleware());
 // Error handler is already configured with logger in ErrorMiddleware
 
 $app->run();
