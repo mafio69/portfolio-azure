@@ -20,7 +20,7 @@
           :key="project.id"
           class="project-card"
       >
-        <h3>{{ project.title }}</h3>
+        <h3>{{ project.name }}</h3>
         <p>{{ project.description }}</p>
         <div class="technologies">
           <span
@@ -30,6 +30,9 @@
           >
             {{ tech }}
           </span>
+        </div>
+        <div>
+          {{ project.url}}
         </div>
       </div>
     </div>
@@ -41,8 +44,9 @@ import { ref, onMounted } from 'vue'
 
 interface Project {
   id: number
-  title: string
+  name: string
   description: string
+  url: string
   technologies: string[]
 }
 
