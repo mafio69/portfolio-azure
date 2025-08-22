@@ -1,4 +1,7 @@
 export interface Project {
-    title: string;
-    desc: string;
+    id: number
+    name: string
+    description: string
+    url: string
+    technologies: string[]
 }

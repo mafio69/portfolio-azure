@@ -1,142 +1,120 @@
-<template>
-  <v-container class="py-8">
-    <!-- Hero Section -->
-    <div class="text-center mb-12">
-      <h1 class="text-h3 font-weight-bold text-primary mb-4">
-        Moje Projekty
-      </h1>
-      <p class="text-h6 text-secondary max-w-2xl mx-auto">
-        Oto wybrane projekty, nad którymi pracowałem. Każdy z nich przedstawia różne aspekty moich umiejętności technicznych.
-      </p>
-    </div>
-
-    <!-- Projects Grid -->
-    <v-row v-if="projects.length > 0">
-      <v-col 
-        v-for="p in projects" 
-        :key="p.id" 
-        cols="12" 
-        md="6" 
-        lg="4"
-      >
-        <v-card
-          elevation="4"
-          hover
-          class="h-100 transition-all"
-          @click="viewProject(p)"
-        >
-          <v-img
-            :src="p.image || '/api/placeholder/400/200'"
-            height="200"
-            cover
-            class="white--text align-end"
-            gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)"
-          >
-            <v-card-title class="text-white">{{ p.name }}</v-card-title>
-          </v-img>
-
-          <v-card-text class="pb-2">
-            <p class="text-body-1 mb-3">{{ p.description }}</p>
-            
-            <v-chip-group v-if="p.technologies">
-              <v-chip
-                v-for="tech in p.technologies"
-                :key="tech"
-                small
-                color="primary"
-                variant="outlined"
-              >
-                {{ tech }}
-              </v-chip>
-            </v-chip-group>
-          </v-card-text>
-
-          <v-card-actions>
-            <v-btn
-              color="primary"
-              variant="text"
-              @click.stop="viewProject(p)"
-            >
-              <v-icon left>mdi-eye</v-icon>
-              Zobacz szczegóły
-            </v-btn>
-            
-            <v-spacer></v-spacer>
-            
-            <v-btn
-              v-if="p.url"
-              :href="p.url"
-              target="_blank"
-              color="secondary"
-              variant="outlined"
-              size="small"
-              @click.stop
-            >
-              <v-icon left>mdi-open-in-new</v-icon>
-              Demo
-            </v-btn>
-          </v-card-actions>
-        </v-card>
-      </v-col>
-    </v-row>
-
-    <!-- Loading State -->
-    <div v-else-if="loading" class="text-center py-12">
-      <v-progress-circular
-        indeterminate
-        color="primary"
-        size="64"
-      ></v-progress-circular>
-      <p class="text-h6 mt-4">Ładowanie projektów...</p>
-    </div>
-
-    <!-- Error State -->
-    <v-alert
-      v-if="error"
-      type="error"
-      variant="tonal"
-      class="mt-4"
-    >
-      <v-alert-title>Wystąpił błąd</v-alert-title>
-      {{ error }}
-    </v-alert>
-
-    <!-- Empty State -->
-    <div v-else-if="projects.length === 0 && !loading" class="text-center py-12">
-      <v-icon size="64" color="secondary" class="mb-4">mdi-folder-open</v-icon>
-      <p class="text-h6">Brak projektów do wyświetlenia</p>
-    </div>
-  </v-container>
-</template>
-
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import type { PropType } from 'vue';
 
-const projects = ref([])
-const error = ref(null)
-const loading = ref(true)
-
-const viewProject = (project: any) => {
-  console.log('Viewing project:', project)
-  // TODO: Navigate to project details page
-  // router.push(`/project/${project.id}`)
+// Definicja interfejsu dla pojedynczego projektu
+interface Project {
+  id: number;
+  name: string;
+  description: string;
+  technologies: string[];
+  url: string;
 }
 
-onMounted(async () => {
-  try {
-    loading.value = true
-    const res = await fetch('/api/projects')
-    
-    if (!res.ok) {
-      throw new Error(`HTTP error! status: ${res.status}`)
-    }
-    
-    projects.value = await res.json()
-  } catch (e: any) {
-    error.value = e.message || 'Nie udało się załadować projektów'
-    console.error('Error loading projects:', e)
-  } finally {
-    loading.value = false
-  }
-})
+// Definicja propsów komponentu
+// Komponent akceptuje tablicę projektów
+defineProps({
+  projects: {
+    type: Array as PropType<Project[]>,
+    required: true,
+  },
+});
 </script>
+
+<template>
+  <div class="projects-grid">
+    <!-- Iteracja po projektach, dodano `index` do śledzenia kolejności -->
+    <v-card
+        v-for="(project, index) in projects"
+        :key="project.id"
+        class="project-card"
+        elevation="2"
+        hover
+        :style="{ 'animation-delay': index * 100 + 'ms' }"
+    >
+      <v-card-title class="headline">{{ project.name }}</v-card-title>
+      <v-card-text>
+        <p class="body-1">{{ project.description }}</p>
+        <div class="technologies mt-4">
+          <!-- Etykiety dla technologii -->
+          <v-chip
+              v-for="tech in project.technologies"
+              :key="tech"
+              class="ma-1 tech-chip"
+              color="primary"
+              variant="outlined"
+              size="small"
+          >
+            {{ tech }}
+          </v-chip>
+        </div>
+      </v-card-text>
+      <v-card-actions>
+        <v-spacer></v-spacer>
+        <!-- Przycisk prowadzący do repozytorium projektu -->
+        <v-btn
+            v-if="project.url"
+            color="primary"
+            :href="project.url"
+            target="_blank"
+            variant="tonal"
+            prepend-icon="mdi-github"
+            class="github-btn"
+        >
+          Zobacz na GitHub
+        </v-btn>
+      </v-card-actions>
+    </v-card>
+  </div>
+</template>
+
+<style scoped>
+/* Definicja animacji wejścia */
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.projects-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 24px;
+}
+
+.project-card {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  
+  /* Zastosowanie animacji */
+  opacity: 0; /* Start from invisible */
+  animation: fade-in-up 0.5s ease-out forwards;
+  
+  /* Płynne przejście dla efektu hover */
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Efekt powiększenia przy najechaniu myszką */
+.project-card:hover {
+  transform: scale(1.03);
+  box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+}
+
+.project-card .v-card-text {
+  flex-grow: 1;
+}
+
+/* Dodatkowe, subtelne efekty dla chipów i przycisku */
+.tech-chip, .github-btn {
+  transition: transform 0.2s ease;
+}
+
+.tech-chip:hover, .github-btn:hover {
+  transform: translateY(-2px);
+}
+</style>
