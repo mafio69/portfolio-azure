@@ -12,38 +12,72 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Set up Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
-          node-version: '18'
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: frontend/package-lock.json
 
       - name: Build Frontend
         working-directory: ./frontend
         run: |
-          npm install
+          set -euo pipefail
+          npm ci
           npm run build
-      - name: Prepare deployment package
-        run: |
-          cp -r frontend/dist/* deploy_package/public/
-      - name: Install Composer Dependencies
+          ls -la dist || true
+
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          tools: composer:v2
+
+      - name: Install Composer dependencies
         working-directory: ./backend
-        run: composer install --prefer-dist --no-progress --no-dev
-
-      - name: Set execute permission for startup script
-        run: chmod +x ./startup.sh
-
-      - name: Prepare deployment package
         run: |
-          mkdir deploy_package
-          cp -r backend/* deploy_package/
-          cp -r frontend/dist/* deploy_package/public/
-          cp nginx.conf deploy_package/
-          cp startup.sh deploy_package/
+          set -euo pipefail
+          composer install --prefer-dist --no-progress --no-dev
+          ls -la vendor || true
 
-      - name: 'Deploy to Azure Web App'
-        uses: azure/webapps-deploy@v2
+      - name: Prepare deployment package structure
+        run: |
+          set -euo pipefail
+          mkdir -p deploy_package/public
+
+      - name: Copy frontend build to deploy package
+        run: |
+          set -euo pipefail
+          # upewnij się, że build istnieje
+          test -d frontend/dist || { echo "Brak katalogu frontend/dist. Czy build się powiódł?"; exit 1; }
+          shopt -s nullglob
+          files=(frontend/dist/*)
+          if [ ${#files[@]} -eq 0 ]; then
+            echo "Brak plików w frontend/dist"; exit 1
+          fi
+          cp -rv frontend/dist/* deploy_package/public/
+          ls -la deploy_package/public || true
+
+      - name: Copy backend and configs to deploy package
+        run: |
+          set -euo pipefail
+          cp -rv backend/* deploy_package/
+          cp -v nginx.conf deploy_package/ || true
+          cp -v startup.sh deploy_package/
+          chmod +x deploy_package/startup.sh
+
+      - name: Show deploy_package tree (debug)
+        run: |
+          set -euo pipefail
+          echo "Zawartość deploy_package:"
+          ls -la deploy_package
+          echo "Zawartość deploy_package/public:"
+          ls -la deploy_package/public || true
+
+      - name: Deploy to Azure Web App
+        uses: azure/webapps-deploy@v3
         with:
           app-name: 'portfolio-php-mariusz'
           publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
