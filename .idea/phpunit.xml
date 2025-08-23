@@ -4,6 +4,7 @@
     <option name="directories">
       <list>
         <option value="\\wsl.localhost\Ubuntu-24.04\home\mariusz\projects\portfolio_azure\tests" />
+        <option value="$PROJECT_DIR$/backend/tests" />
       </list>
     </option>
   </component>
