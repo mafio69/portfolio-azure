@@ -24,7 +24,9 @@ jobs:
         run: |
           npm install
           npm run build
-
+      - name: Prepare deployment package
+        run: |
+          cp -r frontend/dist/* deploy_package/public/
       - name: Install Composer Dependencies
         working-directory: ./backend
         run: composer install --prefer-dist --no-progress --no-dev
