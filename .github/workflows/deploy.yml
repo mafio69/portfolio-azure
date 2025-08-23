@@ -17,21 +17,30 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '18' 
+          node-version: '18'
 
       - name: Build Frontend
+        working-directory: ./frontend
         run: |
           npm install
           npm run build
-        working-directory: ./frontend
-    
+
       - name: Install Composer Dependencies
-        run: composer install --prefer-dist --no-progress --no-dev
         working-directory: ./backend
+        run: composer install --prefer-dist --no-progress --no-dev
+      
+      - name: Prepare deployment package
+        run: |
+          # Utwórz katalog, który będzie wdrożony
+          mkdir deploy_package
+          # Skopiuj cały backend do pakietu wdrożeniowego
+          cp -r backend/* deploy_package/
+          # Skopiuj zbudowany frontend do publicznego folderu w pakiecie
+          cp -r frontend/dist/* deploy_package/public/
 
       - name: 'Deploy to Azure Web App'
         uses: azure/webapps-deploy@v2
         with:
           app-name: 'portfolio-php-mariusz'
           publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
-          package: .
+          package: ./deploy_package
