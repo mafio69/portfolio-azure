@@ -1,4 +1,12 @@
 text eol=lf
+# Wymuś LF dla wszystkich plików tekstowych
+* text=auto eol=lf
+
+# Skrypty bash/shell zawsze LF
+*.sh text eol=lf
+*.yml text eol=lf
+*.yaml text eol=lf
+
 *.png binary
 *.jpg binary
 *.jpeg binary
