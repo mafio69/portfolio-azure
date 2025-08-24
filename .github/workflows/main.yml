@@ -82,3 +82,11 @@ jobs:
           app-name: 'portfolio-php-mariusz'
           publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
           package: ./deploy_package
+
+      - name: Run PHP-FPM
+        run: |
+          sudo service php8.2-fpm start
+      - name: Run nginx
+        run: |
+          sudo nginx -c $GITHUB_WORKSPACE/nginx.conf
+
