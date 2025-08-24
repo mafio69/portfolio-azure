@@ -34,10 +34,9 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
-import ProjectsGrid from '@/components/ProjectsGrid.vue'; // Import komponentu siatki
+import { ref, onMounted, onBeforeUnmount } from 'vue';
+import ProjectsGrid from '@/components/ProjectsGrid.vue';
 
-// Definicja interfejsu dla projektu
 interface Project {
   id: number;
   name: string;
@@ -46,40 +45,68 @@ interface Project {
   technologies: string[];
 }
 
-// Reaktwyne zmienne stanu
 const projects = ref<Project[]>([]);
 const loading = ref(false);
 const error = ref<string | null>(null);
 
-// Funkcja do pobierania danych o projektach z API
+// Baza URL do API z env; w DEV wskazuje na http://localhost:8080/api, w PROD na App Service /api
+const API_BASE = import.meta.env.VITE_API_URL?.replace(/\/+$/, '') || 'http://localhost:8080/api';
+
+const controller = new AbortController();
+
 const fetchProjects = async () => {
   loading.value = true;
   error.value = null;
 
   try {
-    // Adres URL do API backendu
-    const response = await fetch('http://localhost:8000/api/projects');
+    // timeout 10s
+    const timeoutId = setTimeout(() => controller.abort(), 10000);
+
+    const response = await fetch(`${API_BASE}/projects`, {
+      method: 'GET',
+      signal: controller.signal,
+      headers: {
+        'Accept': 'application/json'
+      }
+    });
+
+    clearTimeout(timeoutId);
 
     if (!response.ok) {
-      throw new Error(`Błąd HTTP! Status: ${response.status}`);
+      const text = await response.text().catch(() => '');
+      // spróbuj wyciągnąć komunikat z JSON, jeśli to JSON
+      let details = '';
+      try {
+        const maybe = JSON.parse(text);
+        details = typeof maybe?.message === 'string' ? ` ${maybe.message}` : '';
+      } catch { /* ignore */ }
+
+      throw new Error(`HTTP ${response.status}${details}`);
     }
 
     const data = await response.json();
-    projects.value = data;
-
-  } catch (err) {
-    console.error('Błąd podczas pobierania projektów:', err);
-    error.value = err instanceof Error ? err.message : 'Wystąpił nieznany błąd';
+    projects.value = Array.isArray(data) ? data : [];
+  } catch (err: unknown) {
+    if ((err as any)?.name === 'AbortError') {
+      error.value = 'Przerwano żądanie (timeout).';
+    } else {
+      console.error('Błąd podczas pobierania projektów:', err);
+      error.value = err instanceof Error ? err.message : 'Wystąpił nieznany błąd';
+    }
   } finally {
     loading.value = false;
   }
 };
 
-// Pobierz dane po zamontowaniu komponentu
 onMounted(() => {
   fetchProjects();
 });
+
+onBeforeUnmount(() => {
+  controller.abort();
+});
 </script>
+
 
 <style scoped>
 .fancy-title {
