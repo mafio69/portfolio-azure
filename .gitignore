@@ -1,0 +1,42 @@
+# Ignoruj katalogi IDE
+.idea/
+.vscode/
+
+# Node.js - frontend
+node_modules/
+dist/
+npm-debug.log*
+yarn.lock
+pnpm-lock.yaml
+
+# PHP - backend
+/vendor/
+composer.lock
+.env
+.phpunit.result.cache
+
+# Logi, artefakty
+*.log
+logs/
+coverage/
+
+# Systemowe/OS
+.DS_Store
+Thumbs.db
+
+# Build i deploy
+deploy_package/
+*.swp
+
+# Konfiguracje lokalne
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+*.bak
+
+# Pozostałe pliki tymczasowe
+*.tmp
+tmp/
+.cache/
+
