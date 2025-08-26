@@ -1,26 +1,17 @@
 <?php
+// Obsługa preflight OPTIONS requests
+$app->options('/{routes:.+}', function ($request, $response, $args) {
+    return $response;
+});
 
-declare(strict_types=1);
+// Twoje istniejące trasy...
+$app->get('/api/projects', function ($request, $response) {
+    $data = [
+        ['id' => 1, 'name' => 'Projekt 1', 'description' => 'Opis 1', 'url' => 'http://example.com', 'technologies' => ['PHP', 'Vue.js']],
+        ['id' => 2, 'name' => 'Projekt 2', 'description' => 'Opis 2', 'url' => 'http://example2.com', 'technologies' => ['JavaScript', 'Node.js']]
+    ];
 
-use App\Action\ListProjectsAction;
-use App\Action\ContactAction;
-use Slim\App;
-
-return function (App $app) {
-    $app->get('/', function ($request, $response, $args) {
-        $response->getBody()->write('Backend API is running');
-        return $response->withHeader('Content-Type', 'text/plain');
-    });
-    
-    $app->get('/api/projects', ListProjectsAction::class);
-    $app->post('/api/contact', ContactAction::class);
-    $app->post('/api/debug', function ($request, $response) {
-        $data = [
-            'method' => $request->getMethod(),
-            'raw_body' => $request->getBody()->getContents()
-        ];
-
-        $response->getBody()->write(json_encode($data));
-        return $response->withHeader('Content-Type', 'application/json');
-    });
-};
+    return $response
+        ->withHeader('Content-Type', 'application/json')
+        ->getBody()->write(json_encode($data));
+});
