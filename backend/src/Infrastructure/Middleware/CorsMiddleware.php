@@ -53,7 +53,7 @@ class CorsMiddleware implements MiddlewareInterface
     private function withCorsHeaders(ResponseInterface $response, string $allowOrigin): ResponseInterface
     {
         return $response
-            ->withHeader('Access-Control-Allow-Origin', $allowOrigin)
+            ->withHeader('Access-Control-Allow-Origin', '*')
             ->withHeader('Vary', 'Origin') // ważne dla cache’ów/CDN
             ->withHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS')
             ->withHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization')
