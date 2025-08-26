@@ -20,7 +20,7 @@ class CorsMiddleware implements MiddlewareInterface
         // Podaj domenę SWA (produkcyjną) + localhost dla dev
         $this->allowedOrigins = $allowedOrigins ?: [
             'http://localhost:5173',
-            'https://twoja-nazwa-swa.azurestaticapps.net', // TODO: wstaw własną domenę SWA
+//          'https://blue-river-004e4ee03.1.azurestaticapps.net',
         ];
     }
 
@@ -47,7 +47,7 @@ class CorsMiddleware implements MiddlewareInterface
         }
         // Jeżeli nie rozpoznano originu, zwróć domyślnie produkcyjną domenę SWA
         // (lub pusty string, jeśli wolisz odrzucać niedozwolone po stronie przeglądarki)
-        return 'https://twoja-nazwa-swa.azurestaticapps.net'; // TODO: wstaw własną domenę SWA
+        return 'https://blue-river-004e4ee03.1.azurestaticapps.net';
     }
 
     private function withCorsHeaders(ResponseInterface $response, string $allowOrigin): ResponseInterface

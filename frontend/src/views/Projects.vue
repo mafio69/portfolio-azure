@@ -50,8 +50,8 @@ const loading = ref(false);
 const error = ref<string | null>(null);
 
 // Baza URL do API z env; w DEV wskazuje na http://localhost:8080/api, w PROD na App Service /api
-const API_BASE = import.meta.env.VITE_API_URL?.replace(/\/+$/, '') || 'http://localhost:8080/api';
-
+// const API_BASE = import.meta.env.VITE_API_URL?.replace(/\/+$/, '') || 'http://localhost:8080/api';
+const API_BASE = 'https://portfolio-php-mariusz-atfufefeheahcrb3.germanywestcentral-01.azurewebsites.net/api';
 const controller = new AbortController();
 
 const fetchProjects = async () => {
