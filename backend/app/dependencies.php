@@ -39,7 +39,7 @@ return function (ContainerBuilder $containerBuilder) {
         // CORS z ENV-based origin whitelist
         CorsMiddleware::class => function (): CorsMiddleware {
             $dev = getenv('DEV_ORIGIN') ?: 'http://localhost:5173';
-            $prod = getenv('SWA_ORIGIN') ?: 'https://twoja-nazwa-swa.azurestaticapps.net';
+            $prod = getenv('SWA_ORIGIN') ?: 'https://blue-river-004e4ee03.1.azurestaticapps.net';
             return new CorsMiddleware([$dev, $prod]);
         },
     ]);

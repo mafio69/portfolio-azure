@@ -1,6 +1,8 @@
 <?php
+
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
+use App\Infrastructure\Persistence\Project\InMemoryProjectRepository;
 
 return function ($app) {
     // OPTIONS dla CORS
@@ -8,12 +10,24 @@ return function ($app) {
         return $response;
     });
 
-    // API endpoint
+    // API endpoint - używa Repository Pattern
     $app->get('/api/projects', function (Request $request, Response $response) {
-        $data = [
-            ['id' => 1, 'name' => 'Projekt 1', 'description' => 'Opis 1', 'url' => 'http://example.com', 'technologies' => ['PHP', 'Vue.js']],
-            ['id' => 2, 'name' => 'Projekt 2', 'description' => 'Opis 2', 'url' => 'http://example2.com', 'technologies' => ['JavaScript', 'Node.js']]
-        ];
+        // Dependency Injection - Single Responsibility
+        $projectRepository = new InMemoryProjectRepository();
+
+        // Pobierz wszystkie projekty z repository
+        $projects = $projectRepository->findAll();
+
+        // Konwersja do array (jeśli potrzebna)
+        $data = array_map(function($project) {
+            return [
+                'id' => $project->getId(),
+                'name' => $project->getName(),
+                'description' => $project->getDescription(),
+                'url' => $project->getUrl(),
+                'technologies' => $project->getTechnologies()
+            ];
+        }, $projects);
 
         $response->getBody()->write(json_encode($data));
         return $response->withHeader('Content-Type', 'application/json');
