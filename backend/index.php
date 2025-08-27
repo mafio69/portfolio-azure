@@ -1,23 +1,61 @@
 <?php
 declare(strict_types=1);
-error_log("APP_ENV from PHP: " . (getenv('APP_ENV') ?: 'NULL'));
-error_log("DEV_ORIGIN from PHP: " . (getenv('DEV_ORIGIN') ?: 'NULL'));
+
 use DI\ContainerBuilder;
 use Slim\Factory\AppFactory;
+use Psr\Log\LoggerInterface;
 use App\Infrastructure\Middleware\CorsMiddleware;
+use Slim\Logger;
 
-// 1. Autoloadery i zależności
 require __DIR__ . '/vendor/autoload.php';
 
-// 2. Kontener DI
+// 1) Kontener DI
 $containerBuilder = new ContainerBuilder();
-$dependencies = require __DIR__ . '/app/dependencies.php';
-$app = getApp($dependencies, $containerBuilder);
-$app->add(CorsMiddleware::class);
-// 5. Trasy
-$routes = require __DIR__ . '/app/routes.php';
-$routes($app);
 
-// 6. Uruchom
-$app->run();
+// Załaduj definicje zależności
+$dependencies = require __DIR__ . '/app/dependencies.php';
+/**
+ * @param mixed $dependencies
+ * @param ContainerBuilder $containerBuilder
+ * @return \Slim\App
+ * @throws Exception
+ */
+function getApp(mixed $dependencies, ContainerBuilder $containerBuilder): \Slim\App
+{
+    $dependencies($containerBuilder);
+
+// (opcjonalnie) kompilacja kontenera w prod
+// if (getenv('APP_ENV') === 'prod') {
+//     $containerBuilder->enableCompilation(__DIR__ . '/../var/cache');
+// }
+
+    $container = $containerBuilder->build();
+
+// 2) Aplikacja Slim
+    AppFactory::setContainer($container);
+    $app = AppFactory::create();
+
+// 3) Middleware – kolejność ma znaczenie
+// CORS najpierw: szybka obsługa preflight OPTIONS
+    $app->add(CorsMiddleware::class);
+
+// Routing middleware
+    $app->addRoutingMiddleware();
+
+// Error middleware
+    $displayErrorDetails = (bool)(getenv('APP_DEBUG') ?: '1');
+    $errorMiddleware = $app->addErrorMiddleware($displayErrorDetails, true, true);
+
+    return $app;
+}
+
+try {
+    $app = getApp($dependencies, $containerBuilder);
+    $routes = require __DIR__ . '/app/routes.php';
+    $routes($app);
+    $app->run();
+} catch (Exception $e) {
+    Logger::debug($e->getMessage()) . ' in '. $e->getFile() . ' on line '. $e->getLine();
+}
+
 
