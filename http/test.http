@@ -1,0 +1,9 @@
+### Test GET all projects
+GET http://localhost:8080/api/projects
+Accept: application/json
+Server-Timing
+
+### Test GET all projects
+GET http://localhost:5173/api/projects
+Accept: application/json
+Server-Timing
