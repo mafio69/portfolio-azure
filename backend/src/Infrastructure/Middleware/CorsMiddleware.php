@@ -26,14 +26,13 @@ class CorsMiddleware
 
     private function getAllowedOrigin(): string
     {
-      /*  $devOrigin = getenv('APP_ENV');
+      $devOrigin = getenv('APP_ENV');
 
         if ($devOrigin == 'develop') {
             return 'http://localhost:5173';
         }
 
-        return 'https://blue-river-004e4ee03.1.azurestaticapps.net'; curl -X OPTIONS -H "Origin: http://localhost:5173" -v http://127.0.0.1:8080/api/projects
-*   Trying 127.0.0.1:8080... */
-        return 'http://localhost:5173';
+        return 'https://blue-river-004e4ee03.1.azurestaticapps.net';// curl -X OPTIONS -H "Origin: http://localhost:5173" -v http://127.0.0.1:8080/api/projects*   Trying 127.0.0.1:8080...
+     //   return 'http://localhost:5173';
       }
 }
