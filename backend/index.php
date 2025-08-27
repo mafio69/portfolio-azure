@@ -35,6 +35,8 @@ function getApp(mixed $dependencies, ContainerBuilder $containerBuilder): App
 // 2) Aplikacja Slim
     AppFactory::setContainer($container);
     $app = AppFactory::create();
+    foreach ($app->getRouteCollector()->getRoutes() as $route) {
+        error_log('ROUTE: ' . $route->getPattern());
 
 // 3) Middleware – kolejność ma znaczenie
 // CORS najpierw: szybka obsługa preflight OPTIONS
