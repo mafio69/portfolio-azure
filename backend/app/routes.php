@@ -2,34 +2,19 @@
 
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
-use App\Infrastructure\Persistence\Project\InMemoryProjectRepository;
+use App\Action\ListProjectsAction;
 
 return function ($app) {
-    // OPTIONS dla CORS
-    $app->options('/{routes:.+}', function (Request $request, Response $response) {
-        return $response;
-    });
+    // Endpoints dotyczące projektów
+    $app->get('/api/projects', ListProjectsAction::class);
 
-    // API endpoint - używa Repository Pattern
-    $app->get('/api/projects', function (Request $request, Response $response) {
-        // Dependency Injection - Single Responsibility
-        $projectRepository = new InMemoryProjectRepository();
+    // Tu możesz dodać kolejne trasy, np.:
+    // $app->get('/api/inna_trasa', InnaAkcja::class);
 
-        // Pobierz wszystkie projekty z repository
-        $projects = $projectRepository->findAll();
-
-        // Konwersja do array (jeśli potrzebna)
-        $data = array_map(function($project) {
-            return [
-                'id' => $project->getId(),
-                'name' => $project->getName(),
-                'description' => $project->getDescription(),
-                'url' => $project->getUrl(),
-                'technologies' => $project->getTechnologies()
-            ];
-        }, $projects);
-
-        $response->getBody()->write(json_encode($data));
+    // Przykładowy endpoint zdrowotny (nieobowiązkowy)
+    $app->get('/api/health', function (Request $request, Response $response) {
+        $response->getBody()->write(json_encode(['status' => 'OK']));
         return $response->withHeader('Content-Type', 'application/json');
     });
 };
+
