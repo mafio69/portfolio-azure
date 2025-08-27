@@ -14,6 +14,7 @@ return function ($app) {
     // Przykładowy endpoint zdrowotny (nieobowiązkowy)
     $app->get('/api/health', function (Request $request, Response $response) {
         $response->getBody()->write(json_encode(['status' => 'OK']));
+
         return $response->withHeader('Content-Type', 'application/json');
     });
 };
