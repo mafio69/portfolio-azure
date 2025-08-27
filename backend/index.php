@@ -2,6 +2,7 @@
 declare(strict_types=1);
 
 use DI\ContainerBuilder;
+use Slim\App;
 use Slim\Factory\AppFactory;
 use Psr\Log\LoggerInterface;
 use App\Infrastructure\Middleware\CorsMiddleware;
@@ -17,10 +18,10 @@ $dependencies = require __DIR__ . '/app/dependencies.php';
 /**
  * @param mixed $dependencies
  * @param ContainerBuilder $containerBuilder
- * @return \Slim\App
+ * @return App
  * @throws Exception
  */
-function getApp(mixed $dependencies, ContainerBuilder $containerBuilder): \Slim\App
+function getApp(mixed $dependencies, ContainerBuilder $containerBuilder): App
 {
     $dependencies($containerBuilder);
 
