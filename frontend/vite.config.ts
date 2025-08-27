@@ -20,7 +20,7 @@ export default defineConfig(({ mode }) => {
             ? {
                 proxy: {
                     '/api': {
-                        target: env.VITE_API_URL?.replace(/\/api\/?$/, '') || 'http://localhost:8080',
+                        target: env.VITE_API_URL?.replace(/\/api\/?$/, '') || 'http://0.0.0.0:8080',
                         changeOrigin: true
                     }
                 }
