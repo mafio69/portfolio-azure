@@ -2,7 +2,7 @@
   "routes": [
     {
       "route": "/api/*",
-      "rewrite": "https://portfolio-php-mariusz-atfufefeheahcrb3.germanywestcentral-01.azurewebsites.net/index.php"
+      "rewrite": "https://portfolio-php-mariusz-atfufefeheahcrb3.germanywestcentral-01.azurewebsites.net/index.php/api/{*}"
     },
     {
       "route": "/*",
@@ -10,3 +10,4 @@
     }
   ]
 }
+
