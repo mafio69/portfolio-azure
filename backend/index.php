@@ -1,4 +1,4 @@
-    <?php
+<?php
 declare(strict_types=1);
 
 use DI\ContainerBuilder;
@@ -36,8 +36,8 @@ function getApp(mixed $dependencies, ContainerBuilder $containerBuilder): App
     AppFactory::setContainer($container);
     $app = AppFactory::create();
     foreach ($app->getRouteCollector()->getRoutes() as $route) {
-        error_log('ROUTE: ' . $route->getPattern());
-     }
+        error_log('ROUTE: '.$route->getPattern());
+    }
 // 3) Middleware – kolejność ma znaczenie
 // CORS najpierw: szybka obsługa preflight OPTIONS
     $app->add(CorsMiddleware::class);
