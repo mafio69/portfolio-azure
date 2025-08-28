@@ -1,3 +1,4 @@
+<<<<<<< Updated upstream
 # Ignoruj katalogi IDE
 .idea/
 .vscode/
@@ -39,4 +40,8 @@ deploy_package/
 *.tmp
 tmp/
 .cache/
-
+*Zone.Ident*
+=======
+/backend/vendor/
+/backend/vendor/
+>>>>>>> Stashed changes

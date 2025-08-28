@@ -1,9 +1,0 @@
-RewriteEngine On
-
-# Jeśli żądany plik fizycznie istnieje, nie przepisuj
-RewriteCond %{REQUEST_FILENAME} !-f
-# Jeśli żądany katalog istnieje, nie przepisuj
-RewriteCond %{REQUEST_FILENAME} !-d
-
-# Przekieruj cały ruch do index.php, zachowując parametry
-RewriteRule ^ index.php [QSA,L]
