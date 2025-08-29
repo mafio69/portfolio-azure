@@ -41,7 +41,6 @@ deploy_package/
 tmp/
 .cache/
 *Zone.Ident*
-=======
 /backend/vendor/
-/backend/vendor/
->>>>>>> Stashed changes
+/backend/.env
+/frontend/.env

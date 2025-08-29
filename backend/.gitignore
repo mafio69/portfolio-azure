@@ -83,3 +83,5 @@ vendor/
 var/logs
 vendor
 *Zone.Ident*
+*env*
+

@@ -1,7 +1,7 @@
 services:
   app:
     build:
-      context: ./docker
+      context: .
       dockerfile: Dockerfile
     volumes:
       - ./backend:/var/www/backend # live kod z hosta

@@ -51,7 +51,7 @@ Backend został zbudowany przy użyciu PHP i frameworka Slim.
     ```
 3.  Uruchom wbudowany serwer PHP:
     ```bash
-    php -S localhost:8000 -t public
+    php -S localhost:8080 -t public
     ```
     API będzie dostępne pod adresem `http://localhost:8000`.
 
