@@ -1,23 +1,32 @@
 FROM php:8.3-fpm
 
+# 1. Instalacja zależności systemowych i rozszerzeń PHP
+# Dodano pdo i pdo_mysql, które są standardem w aplikacjach bazodanowych.
 RUN apt-get update && apt-get install -y nginx git unzip libzip-dev \
-    && docker-php-ext-install zip
-# Skopiuj pliki aplikacji DO /var/www/html (tylko backend — bez cluttera buildów frontu)
-COPY ./backend/ /var/www/html/
-# Skopiuj kompozytor oraz zależności (zakładając composer.json w backend/)
-WORKDIR /var/www/html
-RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer \
-    && composer install --no-dev --classmap-authoritative --working-dir=/var/www/html
-# Upewnij się, że użytkownik nginx/php ma dostęp do katalogu aplikacji
-RUN chown -R www-data:www-data /var/www
+    && docker-php-ext-install pdo pdo_mysql zip
 
+WORKDIR /var/www/html
+
+# 2. Instalacja Composera
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+
+# 3. Instalacja zależności PHP (wykorzystuje cache warstw Dockera)
+# Kopiujemy tylko pliki manifestu, aby Docker mógł cache'ować tę warstwę.
+COPY backend/composer.json backend/composer.lock ./
+RUN composer install --no-dev --optimize-autoloader --no-scripts --no-plugins
+
+# 4. Kopiowanie kodu aplikacji
+COPY ./backend/ .
+
+# 5. Kopiowanie plików konfiguracyjnych i startowych
 COPY docker/php/php.ini /usr/local/etc/php/php.ini
 COPY docker/nginx/nginx.conf /etc/nginx/nginx.conf
-
-EXPOSE 8080
-
-# CMD ["nginx", "-g", "daemon off;"]
-# CMD service nginx start && php-fpm
 COPY docker/start.sh /start.sh
+
+# 6. Ustawianie uprawnień po skopiowaniu wszystkich plików
+RUN chown -R www-data:www-data /var/www
 RUN chmod +x /start.sh
+
+# 7. Uruchomienie
+EXPOSE 8080
 CMD ["/start.sh"]

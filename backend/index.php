@@ -9,12 +9,13 @@ use App\Infrastructure\Middleware\CorsMiddleware;
 use Slim\Logger;
 
 require __DIR__ . '/vendor/autoload.php';
-
+error_log('Test log message autoload');
 // 1) Kontener DI
 $containerBuilder = new ContainerBuilder();
 
 // Załaduj definicje zależności
 $dependencies = require __DIR__ . '/app/dependencies.php';
+error_log('Test log message dependencies');
 /**
  * @param mixed $dependencies
  * @param ContainerBuilder $containerBuilder
@@ -57,8 +58,18 @@ try {
     $routes = require __DIR__ . '/app/routes.php';
     $routes($app);
     $app->run();
-} catch (Exception $e) {
-    Logger::debug($e->getMessage()) . ' in '. $e->getFile() . ' on line '. $e->getLine();
+} catch (\Throwable $e) { // Użyj Throwable, aby łapać też błędy (Error), nie tylko wyjątki (Exception)
+    // Ten blok jest "ostatnią deską ratunku", jeśli coś pójdzie nie tak PRZED uruchomieniem
+    // error middleware Slima. Używamy wbudowanego error_log, bo logger z kontenera
+    // może być niedostępny.
+    error_log(sprintf(
+        'FATAL: Uncaught error during app bootstrap: %s in %s on line %d',
+        $e->getMessage(),
+        $e->getFile(),
+        $e->getLine()
+    ));
+
+    // Zwróć prostą odpowiedź błędu, aby uniknąć pustej strony
+    http_response_code(500);
+    echo 'Internal Server Error';
 }
-
-
