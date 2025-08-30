@@ -1,12 +1,5 @@
 {
-  "routes": [
-    {
-      "route": "/api/*",
-      "rewrite": "https://portfolio-php-mariusz-atfufefeheahcrb3.germanywestcentral-01.azurewebsites.net/api/{*}"
-    },
-    {
-      "route": "/*",
-      "serve": "/index.html"
-    }
-  ]
+  "navigationFallback": {
+    "rewrite": "/index.html"
+  }
 }

@@ -6,7 +6,7 @@ Aplikacja portfolio zaprojektowana do wdrożenia na platformie Azure Static Web 
 
 Projekt jest podzielony na dwa główne komponenty:
 
--   **Backend**: Proste API oparte na frameworku **Slim (PHP)**, które dostarcza dane projektów. W kontekście Azure Static Web Apps, jest on wdrażany jako Aplikacja Funkcji (Function App).
+-   **Backend**: Proste API oparte na frameworku **Slim (PHP)**, które dostarcza dane projektów. W kontekście Azure Static Web Apps, jest on wdrażany jako Aplikacja Funkcji (Function App). Lokalnie jest uruchamiany za pomocą Dockera.
 -   **Frontend**: Statyczna aplikacja **Vue.js** z biblioteką komponentów **Vuetify**, odpowiedzialna za interfejs użytkownika i prezentację danych.
 
 Komunikacja między frontendem a backendem na platformie Azure odbywa się poprzez proxy. Zapytania z frontendu do ścieżki `/api` są automatycznie przekierowywane do odpowiedniej funkcji w backendzie.
@@ -17,8 +17,8 @@ Komunikacja między frontendem a backendem na platformie Azure odbywa się poprz
 
 Backend został zbudowany przy użyciu PHP i frameworka Slim.
 
--   **Technologie**: PHP, Slim, PHP-DI
--   **Struktura**: Kod aplikacji znajduje się w katalogu `backend/src/`.
+-   **Technologie**: PHP, Slim, PHP-DI, Docker, Nginx
+-   **Struktura**: Kod aplikacji znajduje się w katalogu `backend/`.
 
 ### Endpointy API
 
@@ -39,21 +39,21 @@ Backend został zbudowany przy użyciu PHP i frameworka Slim.
         ]
         ```
 
-### Uruchomienie lokalne
+### Uruchomienie lokalne (Docker)
 
-1.  Przejdź do katalogu backendu:
+Backend jest skonteneryzowany przy użyciu Dockera.
+
+1.  Upewnij się, że masz zainstalowany i uruchomiony Docker oraz Docker Compose.
+2.  Z głównego katalogu projektu uruchom kontenery:
     ```bash
-    cd backend
+    docker-compose up -d
     ```
-2.  Zainstaluj zależności (jeśli nie były instalowane):
-    ```bash
-    composer install
-    ```
-3.  Uruchom wbudowany serwer PHP:
-    ```bash
-    php -S localhost:8080 -t public
-    ```
-    API będzie dostępne pod adresem `http://localhost:8000`.
+3.  Przy pierwszym uruchomieniu, Docker zbuduje obraz, co może zająć kilka minut. Po zakończeniu, API będzie dostępne pod adresem `http://localhost:8080`.
+
+Aby zatrzymać kontenery, użyj polecenia:
+```bash
+docker-compose down
+```
 
 ---
 
@@ -98,7 +98,7 @@ Pliki wynikowe zostaną umieszczone w katalogu `frontend/dist`.
 
 ## Deployment (Wdrożenie na Azure)
 
-Aplikacja jest przystosowana do wdrożenia jako **Azure Static Web App**. Proces ten zazwyczaj polega na połączeniu repozytorium Git (np. z GitHub) z usługą Azure.
+Aplikacja jest przystosowana do wdrożenia jako **Azure Static Web App**. Proces ten zazwyczaj polega na połączeniu repozytorium Git (np. z GitHub) z usługą Azure. Konfiguracja ta wykorzystuje kod źródłowy i nie bazuje na obrazie Docker.
 
 1.  **Utwórz zasób** Azure Static Web App w portalu Azure.
 2.  **Połącz repozytorium**: Wskaż swoje repozytorium Git.
@@ -113,20 +113,12 @@ Po skonfigurowaniu, Azure automatycznie zbuduje i wdroży aplikację po każdym 
 
 ## Rozwiązywanie problemów
 
-### Błąd "500 Internal Server Error" - brak połączenia z backendem
+### Błąd połączenia z API (np. błąd sieciowy w konsoli przeglądarki)
 
-Jeśli widzisz błąd 500 lub brak połączenia z API, prawdopodobnie backend nie jest uruchomiony. Frontend próbuje łączyć się z API pod adresem `localhost:8000`, ale serwer PHP nie działa.
+Gdy frontend nie może połączyć się z backendem, najczęstszą przyczyną jest nieuruchomiony kontener Dockera.
 
 **Rozwiązanie:**
 
-1. **Windows**: Uruchom `start-backend.bat` z głównego katalogu projektu
-2. **Linux/WSL**: Uruchom `./start-backend.sh` z głównego katalogu projektu
-
-Alternatywnie, możesz ręcznie uruchomić backend:
-```bash
-cd backend
-composer install  # tylko przy pierwszym uruchomieniu
-php -S localhost:8000 -t public
-```
-
-Po uruchomieniu backendu, frontend powinien poprawnie łączyć się z API i wyświetlać listę projektów.
+1.  Sprawdź, czy kontenery Dockera są uruchomione, używając polecenia `docker ps`. Powinieneś zobaczyć kontener dla tego projektu.
+2.  Jeśli kontener nie jest uruchomiony, przejdź do głównego katalogu projektu i uruchom go za pomocą `docker-compose up -d`.
+3.  Sprawdź logi kontenera w poszukiwaniu błędów: `docker-compose logs app`.
