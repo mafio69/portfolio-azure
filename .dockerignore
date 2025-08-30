@@ -1,0 +1,35 @@
+# Ignoruj wszystko, co niepotrzebne do obrazu produkcyjnego
+.git
+.gitignore
+.env
+*.md
+node_modules
+*.log
+*.sqlite
+*.sqlite3
+docker-compose.yml
+docker-compose.yaml
+
+# Ignoruj cache/phpstorm itp.
+.idea
+.vscode
+
+# Ignoruj logi lokalne
+var/log
+logs/
+storage/logs
+
+# Ignoruj pliki konfigów devopsowych
+*.php_cs.cache
+tests/
+phpunit.xml
+phpunit.xml.dist
+
+# Ignoruj zależności jeśli chcesz 'composer install' w obrazie!
+vendor
+# composer.lock
+
+# (opcjonalnie) build frontu jeśli robisz to osobno
+frontend/
+dist/
+build/

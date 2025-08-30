@@ -1,0 +1,10 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - ./backend:/var/www/backend # live kod z hosta
+    ports:
+      - "8080:8080"
+    restart: unless-stopped

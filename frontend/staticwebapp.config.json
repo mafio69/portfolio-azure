@@ -2,7 +2,7 @@
   "routes": [
     {
       "route": "/api/*",
-      "rewrite": "https://dexter-b4hvc5evh2csgxcf.polandcentral-01.azurewebsites.net/api/{*}"
+      "rewrite": "https://mariusz-kontener-app.happyrock-62f709f5.germanywestcentral.azurecontainerapps.io/api/{*}"
     },
     {
       "route": "/*",
@@ -10,3 +10,4 @@
     }
   ]
 }
+
