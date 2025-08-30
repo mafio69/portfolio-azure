@@ -1,5 +1,13 @@
 {
-  "navigationFallback": {
-    "rewrite": "/index.html"
-  }
+  "routes": [
+    {
+      "route": "/api/*",
+      "rewrite": "https://mariusz-kontener-app.happyrock-62f709f5.germanywestcentral.azurecontainerapps.io/api/{*}"
+    },
+    {
+      "route": "/*",
+      "serve": "/index.html"
+    }
+  ]
 }
+
