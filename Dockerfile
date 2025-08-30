@@ -3,7 +3,7 @@ FROM php:8.3-fpm
 RUN apt-get update && apt-get install -y nginx git unzip libzip-dev \
     && docker-php-ext-install zip
 # Skopiuj pliki aplikacji DO /var/www/html (tylko backend — bez cluttera buildów frontu)
-COPY ./backend/* /var/www/html/
+COPY ./backend/ /var/www/html/
 # Skopiuj kompozytor oraz zależności (zakładając composer.json w backend/)
 WORKDIR /var/www/html
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer \
