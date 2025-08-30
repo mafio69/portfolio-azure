@@ -14,8 +14,8 @@ RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local
 # Upewnij się, że użytkownik nginx/php ma dostęp do katalogu aplikacji
 RUN chown -R www-data:www-data /var/www
 
-COPY docker/nginx/nginx.conf /etc/nginx/nginx.conf
 COPY docker/php/php.ini /usr/local/etc/php/php.ini
+COPY docker/nginx/nginx.conf /etc/nginx/nginx.conf
 EXPOSE 8080
 
 # CMD ["nginx", "-g", "daemon off;"]
