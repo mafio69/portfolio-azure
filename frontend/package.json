@@ -1,6 +1,7 @@
 {
   "name": "portfolio-vue-vuetify",
   "version": "1.0.0",
+  "private": true,
   "scripts": {
     "dev": "vite",
     "build": "vite build",
@@ -17,5 +18,8 @@
     "vite-plugin-html": "^3.2.2",
     "vite-plugin-vue-devtools": "^7.7.7",
     "vite-plugin-vuetify": "^2.0.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
   }
 }
