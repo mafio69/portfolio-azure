@@ -1,0 +1,92 @@
+name: Deploy Portfolio to Azure
+
+# Kontrola współbieżności: anuluje poprzednie uruchomienia dla tego samego brancha/PR
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+on:
+  push:
+    branches:
+      - main
+    # Uruchom workflow tylko gdy zmieniają się istotne pliki
+    paths:
+      - 'frontend/**'
+      - 'backend/**'
+      - 'Dockerfile'
+      - 'docker/**'
+      - '.github/workflows/main.yml'
+  pull_request:
+    types: [opened, synchronize, reopened, closed]
+    branches:
+      - main
+    # Dla Pull Requestów budujemy tylko podgląd frontendu
+    paths:
+      - 'frontend/**'
+      - '.github/workflows/main.yml'
+  workflow_dispatch:
+
+jobs:
+  # Zadanie 1: Buduje i wdraża frontend na Azure Static Web Apps
+  build_and_deploy_frontend:
+    # Uruchom przy push do main lub przy aktywnym Pull Requeście
+    if: github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.action != 'closed')
+    runs-on: ubuntu-latest
+    name: Build and Deploy Frontend to SWA
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: true
+
+      - name: Build and Deploy
+        id: builddeploy
+        uses: Azure/static-web-apps-deploy@v1
+        with:
+          azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN }}
+          repo_token: ${{ secrets.GITHUB_TOKEN }} # Potrzebne do komentarzy w Pull Requestach
+          action: "upload"
+          ###### Konfiguracja aplikacji ######
+          app_location: "frontend" # Ścieżka do kodu frontendu
+          api_location: "" # API jest wdrażane osobno, więc zostawiamy puste
+          output_location: "dist" # Katalog wyjściowy po zbudowaniu Vite
+
+  # To zadanie czyści środowiska tymczasowe w SWA po zamknięciu Pull Requesta
+  close_pull_request_job:
+    if: github.event_name == 'pull_request' && github.event.action == 'closed'
+    runs-on: ubuntu-latest
+    name: Close SWA Pull Request Environment
+    steps:
+      - name: Close Pull Request
+        id: closepullrequest
+        uses: Azure/static-web-apps-deploy@v1
+        with:
+          azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN }}
+          action: "close"
+
+  # Zadanie 2: Buduje i wdraża backend na Azure Container Apps
+  build_and_deploy_backend:
+    # Uruchom tylko przy push do gałęzi main
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    name: Build and Deploy Backend to ACA
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Log in to Azure
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Build and push Docker image to Azure Container Registry
+        run: |
+          az acr build --registry ${{ secrets.ACR_NAME }} --image ${{ secrets.ACR_NAME }}.azurecr.io/portfolio-backend:${{ github.sha }} --file Dockerfile .
+
+      - name: Update Azure Container App
+        uses: azure/CLI@v1
+        with:
+          inlineScript: |
+            az containerapp update \
+              --name ${{ secrets.CONTAINER_APP_NAME }} \
+              --resource-group ${{ secrets.RESOURCE_GROUP }} \
+              --image ${{ secrets.ACR_NAME }}.azurecr.io/portfolio-backend:${{ github.sha }}

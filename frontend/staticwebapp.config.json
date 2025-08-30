@@ -1,15 +1,12 @@
 {
   "routes": [
-    {
-      "route": "/api/*",
-      "rewrite": "https://mariusz-kontener-app.happyrock-62f709f5.germanywestcentral.azurecontainerapps.io/{*}"
-    },{
+  {
       "route": "/api/*",
       "rewrite": "https://mariusz-kontener-app.happyrock-62f709f5.germanywestcentral.azurecontainerapps.io/api/{*}"
     },
-    {
-      "route": "/*",
-      "serve": "/index.html"
-    }
-  ]
+  ],
+  "navigationFallback": {
+    "rewrite": "/index.html",
+    "exclude": ["/assets/*", "*.{css,js,png,jpg,gif,svg,ico}"]
+  }
 }
