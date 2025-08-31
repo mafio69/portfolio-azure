@@ -1,0 +1,49 @@
+name: Trigger auto deployment for mariusz-kontener-app
+
+# When this action will be executed
+on:
+  # Automatically trigger it when detected changes in repo
+  push:
+    branches: 
+      [ main ]
+    paths:
+    - '**'
+    - '.github/workflows/mariusz-kontener-app-AutoDeployTrigger-cf8ba6f4-68ea-4df6-ac7a-5df5e624a9b4.yml'
+
+  # Allow manual trigger 
+  workflow_dispatch:      
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    permissions: 
+      id-token: write #This is required for requesting the OIDC JWT Token
+      contents: read #Required when GH token is used to authenticate with private repo
+
+    steps:
+      - name: Checkout to the branch
+        uses: actions/checkout@v2
+
+      - name: Azure Login
+        uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.MARIUSZKONTENERAPP_AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.MARIUSZKONTENERAPP_AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.MARIUSZKONTENERAPP_AZURE_SUBSCRIPTION_ID }}
+
+      - name: Build and push container image to registry
+        uses: azure/container-apps-deploy-action@v2
+        with:
+          appSourcePath: ${{ github.workspace }}
+          _dockerfilePathKey_: _dockerfilePath_
+          _targetLabelKey_: _targetLabel_
+          registryUrl: mariuszregistry.azurecr.io
+          registryUsername: ${{ secrets.MARIUSZKONTENERAPP_REGISTRY_USERNAME }}
+          registryPassword: ${{ secrets.MARIUSZKONTENERAPP_REGISTRY_PASSWORD }}
+          containerAppName: mariusz-kontener-app
+          resourceGroup: cloud-shell-storage-westeurope
+          imageToBuild: mariuszregistry.azurecr.io/mariusz-kontener-app:${{ github.sha }}
+          _buildArgumentsKey_: |
+            _buildArgumentsValues_
+
+
