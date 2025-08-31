@@ -22,7 +22,9 @@ COPY ./backend/ .
 COPY docker/php/php.ini /usr/local/etc/php/php.ini
 COPY docker/nginx/nginx.conf /etc/nginx/nginx.conf
 COPY docker/start.sh /start.sh
-
+# Generuj certyfikat podczas builda!
+RUN mkdir -p /etc/nginx/ssl
+RUN openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/nginx/ssl/key.pem -out /etc/nginx/ssl/cert.pem -subj "/CN=localhost"
 # 6. Ustawianie uprawnień po skopiowaniu wszystkich plików
 RUN chown -R www-data:www-data /var/www
 RUN chmod +x /start.sh
