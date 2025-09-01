@@ -7,30 +7,19 @@
           <v-img src="https://via.placeholder.com/150" alt="Mariusz Franciszczak"></v-img>
         </v-avatar>
 
-        <h1 class="display-2 font-weight-bold mb-4 animated-hero-title">
-          Mariusz Franciszczak
-        </h1>
+        <h1 class="display-2 font-weight-bold mb-4 animated-hero-title">Mariusz Franciszczak</h1>
         <h2 class="text-h4 font-weight-light mb-6 animated-hero-subtitle">
           Twój Doświadczony Programista PHP & Web Developer
         </h2>
         <p class="text-h6 mb-8 animated-hero-description">
-          Z pasją tworzę innowacyjne i efektywne rozwiązania webowe, łącząc solidne podstawy PHP z nowoczesnymi technologiami frontendowymi.
+          Z pasją tworzę innowacyjne i efektywne rozwiązania webowe, łącząc solidne podstawy PHP z
+          nowoczesnymi technologiami frontendowymi.
         </p>
-        <v-btn
-          color="primary"
-          size="x-large"
-          class="animated-hero-button mr-4"
-          to="/projects"
-        >
+        <v-btn color="primary" size="x-large" class="animated-hero-button mr-4" to="/projects">
           <v-icon left>mdi-folder-multiple-image</v-icon>
           Zobacz Moje Projekty
         </v-btn>
-        <v-btn
-          color="secondary"
-          size="x-large"
-          class="animated-hero-button"
-          to="/contact"
-        >
+        <v-btn color="secondary" size="x-large" class="animated-hero-button" to="/contact">
           <v-icon left>mdi-email</v-icon>
           Skontaktuj Się
         </v-btn>
@@ -51,22 +40,39 @@
   align-items: center;
   justify-content: center;
   text-align: center;
+  position: relative; /* Potrzebne do pozycjonowania pseudo-elementu */
+  overflow: hidden; /* Ukrywa pseudo-element wychodzący poza kontener */
+  background-color: #2c3e50; /* Tło zastępcze na wypadek problemów z animacją */
+}
 
-  /* Bardziej złożone tło z animacją */
-  background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
-  background-size: 400% 400%;
+/* Bardziej wydajna animacja tła przy użyciu pseudo-elementu i transformacji */
+.home-hero::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -50%; /* Zaczynamy z częścią gradientu poza ekranem */
+  width: 200%; /* Szerszy niż kontener, aby było co przesuwać */
+  height: 100%;
+  background: linear-gradient(135deg, #2c3e50 0%, #34495e 50%, #2c3e50 100%);
+  z-index: 0; /* Umieszczenie za treścią */
   animation: gradient-animation 15s ease infinite;
+}
+
+/* Upewnienie się, że treść jest nad animowanym tłem */
+.home-hero > .v-row {
+  position: relative;
+  z-index: 1;
 }
 
 @keyframes gradient-animation {
   0% {
-    background-position: 0% 50%;
+    transform: translateX(-25%);
   }
   50% {
-    background-position: 100% 50%;
+    transform: translateX(25%);
   }
   100% {
-    background-position: 0% 50%;
+    transform: translateX(-25%);
   }
 }
 
