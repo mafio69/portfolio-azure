@@ -1,0 +1,1 @@
+{"version":2,"defects":[],"times":{"ProjectTest::testConstructorAndGetters":0.128,"ProjectTest::testJsonSerialization":0.007,"ProjectTest::testProjectWithEmptyTechnologies":0.003,"ProjectTest::testProjectWithDifferentTechnologyStacks":0.01,"ProjectTest::testProjectImmutability":0.009,"ProjectTest::testProjectUrlFormat":0.007}}
