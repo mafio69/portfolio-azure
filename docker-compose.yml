@@ -1,11 +1,9 @@
 services:
   app:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    volumes:
-      - ./backend:/var/www/backend # live kod z hosta
-      - ./frontend:/var/www/frontend # live kod z hosta
+    build: .
     ports:
       - "8080:80"
-    restart: unless-stopped
+    volumes:
+      - ./html/public:/var/www/html/public
+      - ./backend:/var/www/backend
+
