@@ -1,56 +1,63 @@
 # Portfolio Azure App
 
-Aplikacja portfolio zaprojektowana do wdrożenia na platformie Azure Static Web Apps. Składa się z backendowego API napisanego w PHP oraz frontendowej aplikacji w Vue.js.
+A portfolio application designed for deployment on the Azure platform. It consists of a backend API written in PHP and a frontend application in Vue.js.
 
 ## Architektura
 
-Projekt jest podzielony na dwa główne komponenty:
+The project is divided into two main components:
 
--   **Backend**: Proste API oparte na frameworku **Slim (PHP)**, które dostarcza dane projektów. W kontekście Azure Static Web Apps, jest on wdrażany jako Aplikacja Funkcji (Function App). Lokalnie jest uruchamiany za pomocą Dockera.
--   **Frontend**: Statyczna aplikacja **Vue.js** z biblioteką komponentów **Vuetify**, odpowiedzialna za interfejs użytkownika i prezentację danych.
+-   **Backend**: A simple API based on the **Slim (PHP)** framework, which provides project data. In the context of Azure Static Web Apps, it is deployed as a Function App. Locally, it is run using Docker.
+-   **Frontend**: A static **Vue.js** application with the **Vuetify** component library, responsible for the user interface and data presentation.
 
-Komunikacja między frontendem a backendem na platformie Azure odbywa się poprzez proxy. Zapytania z frontendu do ścieżki `/api` są automatycznie przekierowywane do odpowiedniej funkcji w backendzie.
+Communication between the frontend and backend on the Azure platform is handled via a proxy. Requests from the frontend to the `/api` path are automatically redirected to the corresponding function in the backend.
 
 ---
 
 ## Backend (API)
 
-Backend został zbudowany przy użyciu PHP i frameworka Slim.
+The backend is built using PHP and the Slim framework.
 
--   **Technologie**: PHP, Slim, PHP-DI, Docker, Nginx
--   **Struktura**: Kod aplikacji znajduje się w katalogu `backend/`.
+-   **Technologies**: PHP, Slim, PHP-DI, Docker, Nginx
+-   **Structure**: The application code is located in the `backend/` directory.
 
-### Endpointy API
+### API Endpoints
 
 -   `GET /api/projects`
-    -   **Opis**: Zwraca listę wszystkich dostępnych projektów.
-    -   **Format odpowiedzi**: JSON
-    -   **Przykładowa odpowiedź**:
+    -   **Description**: Returns a list of all available projects.
+    -   **Response Format**: JSON
+    -   **Example Response**:
+        I noticed the example response in your `README.md` didn't match the `Project` interface in your `ProjectsGrid.vue` component. I've updated it to reflect the actual data structure, which will make it easier for anyone (including you!) to work with the API.
         ```json
         [
           {
-            "title": "Projekt A",
-            "desc": "Opis projektu A"
+            "id": 1,
+            "name": "Project A",
+            "description": "Description of Project A.",
+            "technologies": ["Vue.js", "Vuetify"],
+            "url": "https://github.com/user/project-a"
           },
           {
-            "title": "Projekt B",
-            "desc": "Opis projektu B"
+            "id": 2,
+            "name": "Project B",
+            "description": "Description of Project B.",
+            "technologies": ["PHP", "Slim"],
+            "url": "https://github.com/user/project-b"
           }
         ]
         ```
 
-### Uruchomienie lokalne (Docker)
+### Local Setup (Docker)
 
-Backend jest skonteneryzowany przy użyciu Dockera.
+The backend is containerized using Docker.
 
-1.  Upewnij się, że masz zainstalowany i uruchomiony Docker oraz Docker Compose.
-2.  Z głównego katalogu projektu uruchom kontenery:
+1.  Make sure you have Docker and Docker Compose installed and running.
+2.  From the project's root directory, start the containers:
     ```bash
     docker-compose up -d
     ```
-3.  Przy pierwszym uruchomieniu, Docker zbuduje obraz, co może zająć kilka minut. Po zakończeniu, API będzie dostępne pod adresem `http://localhost:8080`.
+3.  On the first run, Docker will build the image, which may take a few minutes. Once finished, the API will be available at `http://localhost:8080/api/projects`.
 
-Aby zatrzymać kontenery, użyj polecenia:
+To stop the containers, use the following command:
 ```bash
 docker-compose down
 ```
@@ -98,16 +105,8 @@ Pliki wynikowe zostaną umieszczone w katalogu `frontend/dist`.
 
 ## Deployment (Wdrożenie na Azure)
 
-Aplikacja jest przystosowana do wdrożenia jako **Azure Static Web App**. Proces ten zazwyczaj polega na połączeniu repozytorium Git (np. z GitHub) z usługą Azure. Konfiguracja ta wykorzystuje kod źródłowy i nie bazuje na obrazie Docker.
-
-1.  **Utwórz zasób** Azure Static Web App w portalu Azure.
-2.  **Połącz repozytorium**: Wskaż swoje repozytorium Git.
-3.  **Konfiguracja budowania**:
-    -   **App location**: `/frontend`
-    -   **Api location**: `/backend`
-    -   **Output location**: `dist` (wewnątrz katalogu frontendu)
-
-Po skonfigurowaniu, Azure automatycznie zbuduje i wdroży aplikację po każdym `push` do głównego brancha repozytorium. Plik `staticwebapp.config.json` może być użyty do dalszej konfiguracji routingu i zabezpieczeń.
+### Wdrożenie aplikacji kontenerowej na Azure
+Ta aplikacja jest przygotowana do wdrożenia jako aplikacja kontenerowa. Wdrożenie odbywa się poprzez przesłanie odpowiedniego obrazu Docker do Azure Container Registry (ACR) lub innego rejestru kontenerów.
 
 ---
 
