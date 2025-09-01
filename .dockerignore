@@ -30,6 +30,5 @@ vendor
 # composer.lock
 
 # (opcjonalnie) build frontu jeśli robisz to osobno
-frontend/
-dist/
-build/
+frontend/node_modules
+backend/vendor
