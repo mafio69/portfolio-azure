@@ -2,7 +2,7 @@
 
 A portfolio application designed for deployment on the Azure platform. It consists of a backend API written in PHP and a frontend application in Vue.js.
 
-## Architektura
+## Architecture
 
 The project is divided into two main components:
 
@@ -26,7 +26,6 @@ The backend is built using PHP and the Slim framework.
     -   **Description**: Returns a list of all available projects.
     -   **Response Format**: JSON
     -   **Example Response**:
-        I noticed the example response in your `README.md` didn't match the `Project` interface in your `ProjectsGrid.vue` component. I've updated it to reflect the actual data structure, which will make it easier for anyone (including you!) to work with the API.
         ```json
         [
           {
@@ -66,58 +65,59 @@ docker-compose down
 
 ## Frontend
 
-Frontend to aplikacja typu Single Page Application (SPA) zbudowana w oparciu o Vue.js.
+The frontend is a Single Page Application (SPA) built with Vue.js.
 
--   **Technologie**: Vue.js, Vite, Vuetify, Vue Router
--   **Struktura**: Kod aplikacji znajduje się w katalogu `frontend/src/`.
+-   **Technologies**: Vue.js, Vite, Vuetify, Vue Router
+-   **Structure**: The application code is located in the `frontend/src/` directory.
 
-### Kluczowe komponenty
+### Key Components
 
--   `App.vue`: Główny komponent aplikacji.
--   `ProjectsGrid.vue`: Komponent odpowiedzialny za pobieranie i wyświetlanie siatki projektów z API.
+-   `App.vue`: The main application component.
+-   `ProjectsGrid.vue`: The component responsible for fetching and displaying the grid of projects from the API.
 
-### Uruchomienie lokalne
+### Local Setup
 
-1.  Przejdź do katalogu frontendu:
+1.  Navigate to the frontend directory:
     ```bash
     cd frontend
     ```
-2.  Zainstaluj zależności (jeśli nie były instalowane):
+2.  Install the dependencies (if not already installed):
     ```bash
     npm install
     ```
-3.  Uruchom serwer deweloperski Vite:
+3.  Start the Vite development server:
     ```bash
     npm run dev
     ```
-    Aplikacja będzie dostępna pod adresem wskazanym przez Vite (zazwyczaj `http://localhost:5173`).
+    The application will be available at the address provided by Vite (usually `http://localhost:5173`).
 
-### Budowanie aplikacji
+### Building the Application
 
-Aby stworzyć statyczną wersję produkcyjną aplikacji, wykonaj polecenie:
+To create a static production build of the application, run the following command:
 
 ```bash
 npm run build
 ```
-Pliki wynikowe zostaną umieszczone w katalogu `frontend/dist`.
+
+The resulting files will be placed in the 'frontend/dist' directory.
 
 ---
 
-## Deployment (Wdrożenie na Azure)
+## Deployment (Deployment to Azure)
 
-### Wdrożenie aplikacji kontenerowej na Azure
-Ta aplikacja jest przygotowana do wdrożenia jako aplikacja kontenerowa. Wdrożenie odbywa się poprzez przesłanie odpowiedniego obrazu Docker do Azure Container Registry (ACR) lub innego rejestru kontenerów.
+### Deploy a containerized application to Azure
+This application is prepared to be deployed as a containerized application. Deployment is done by uploading the appropriate Docker image to Azure Container Registry (ACR) or another container registry.
 
 ---
 
-## Rozwiązywanie problemów
+## Troubleshooting
 
-### Błąd połączenia z API (np. błąd sieciowy w konsoli przeglądarki)
+### API connection error (e.g. network error in browser console)
 
-Gdy frontend nie może połączyć się z backendem, najczęstszą przyczyną jest nieuruchomiony kontener Dockera.
+When the frontend can't connect to the backend, the most common cause is an unrunning Docker container.
 
-**Rozwiązanie:**
+**Solution:**
 
-1.  Sprawdź, czy kontenery Dockera są uruchomione, używając polecenia `docker ps`. Powinieneś zobaczyć kontener dla tego projektu.
-2.  Jeśli kontener nie jest uruchomiony, przejdź do głównego katalogu projektu i uruchom go za pomocą `docker-compose up -d`.
-3.  Sprawdź logi kontenera w poszukiwaniu błędów: `docker-compose logs app`.
+1. Check if the Docker containers are running using the 'docker ps' command. You should see a container for this project.
+2. If the container is not running, go to the root directory of the project and run it using 'docker-compose up -d'.
+3. Check the container logs for errors: 'docker-compose logs app'.
