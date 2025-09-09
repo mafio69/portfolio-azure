@@ -15,11 +15,14 @@
           Z pasją tworzę innowacyjne i efektywne rozwiązania webowe, łącząc solidne podstawy PHP z
           nowoczesnymi technologiami frontendowymi.
         </p>
-        <v-btn color="primary" size="x-large" class="animated-hero-button mr-4" to="/projects">
+        <p class="text-body-1 mt-n6 mb-8 animated-hero-description" style="animation-delay: 0.7s; opacity: 0.8;">
+          Ta strona stanowi mój warsztatowy projekt stworzony w ramach praktyki z wdrożenia aplikacji na platformie Microsoft Azure. To ćwiczenie, dzięki któremu rozwijam umiejętności DevOps oraz doskonalę deployment nowoczesnych aplikacji webowych w chmurze.
+        </p>
+        <v-btn color="primary" size="x-large" class="animated-hero-button mr-4" to="/projects" style="animation-delay: 0.9s">
           <v-icon left>mdi-folder-multiple-image</v-icon>
           Zobacz Moje Projekty
         </v-btn>
-        <v-btn color="secondary" size="x-large" class="animated-hero-button" to="/contact">
+        <v-btn color="secondary" size="x-large" class="animated-hero-button" to="/contact" style="animation-delay: 1.0s">
           <v-icon left>mdi-email</v-icon>
           Skontaktuj Się
         </v-btn>

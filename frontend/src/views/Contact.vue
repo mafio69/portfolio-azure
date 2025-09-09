@@ -10,7 +10,10 @@
             <v-list>
               <v-list-item prepend-icon="mdi-email">
                 <v-list-item-title>Email</v-list-item-title>
-                <v-list-item-subtitle>mariusz.franciszczak@gmail.com</v-list-item-subtitle>
+                <v-list-item-subtitle>
+                  <!-- Użycie właściwości obliczeniowej do wstawienia adresu -->
+                  <a :href="`mailto:${protectedEmail}`">{{ protectedEmail }}</a>
+                </v-list-item-subtitle>
               </v-list-item>
               <v-divider></v-divider>
               <v-list-item prepend-icon="mdi-map-marker">
@@ -57,12 +60,19 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 
 const form = ref({
   name: '',
   email: '',
   message: '',
+});
+
+// Właściwość obliczeniowa do bezpiecznego zarządzania adresem e-mail
+const protectedEmail = computed(() => {
+  const user = 'mariusz.franciszczak';
+  const domain = 'gmail.com';
+  return `${user}@${domain}`;
 });
 
 const handleSubmit = () => {
@@ -73,6 +83,15 @@ const handleSubmit = () => {
 </script>
 
 <style scoped>
+/* Styl dla linku email, aby pasował do reszty */
+a {
+  color: inherit;
+  text-decoration: none;
+}
+a:hover {
+  text-decoration: underline;
+}
+
 @keyframes fade-in-up {
   from {
     opacity: 0;
